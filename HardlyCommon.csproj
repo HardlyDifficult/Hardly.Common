@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{00174C6B-A135-42A7-AF86-CA81806820A5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>HardlyCommon</RootNamespace>
+    <AssemblyName>HardlyCommon</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\TacticalArena\Assets\Scripts\Dependancies\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Data\Collections\Extensions\AppDomainExtensions.cs" />
+    <Compile Include="Data\Collections\Extensions\DelegateExtensions.cs" />
+    <Compile Include="Data\Collections\Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Data\Collections\Extensions\FloatArrayExtensions.cs" />
+    <Compile Include="Data\Collections\Extensions\ListExtensions.cs" />
+    <Compile Include="Data\Numbers\RangedInt.cs" />
+    <Compile Include="Reflection\ReflectionHelpers.cs" />
+    <Compile Include="Data\Collections\Extensions\ArrayExtensions.cs" />
+    <Compile Include="Data\Collections\Extensions\EnumExtensions.cs" />
+    <Compile Include="Data\Numbers\FloatExtensions.cs" />
+    <Compile Include="Data\Files\SortFileInfoByWriteDate.cs" />
+    <Compile Include="Data\Strings\ByteToStringExtensions.cs" />
+    <Compile Include="Data\Strings\CharExtensions.cs" />
+    <Compile Include="Data\Strings\NumberToStringExtensions.cs" />
+    <Compile Include="Data\Strings\StringExtensions.cs" />
+    <Compile Include="Data\Strings\StringManipulationExtensions.cs" />
+    <Compile Include="Data\Strings\StringParsingExtensions.cs" />
+    <Compile Include="Reflection\TypeExtensions.cs" />
+    <Compile Include="Network\Http\HttpContentType.cs" />
+    <Compile Include="Network\Http\WebClient.cs" />
+    <Compile Include="Data\Numbers\Rng.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Data\Numbers\BoundedFloat.cs" />
+    <Compile Include="Data\Numbers\HDMath.cs" />
+    <Compile Include="Data\Collections\Extensions\TimeSpanExtensions.cs" />
+    <Compile Include="Reflection\TypeInstatiationExtensions.cs" />
+    <Compile Include="Reflection\TypeReflectionExtensions.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\Collections\Specialized\" />
+    <Folder Include="Network\Tcp\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
