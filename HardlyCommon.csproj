@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -42,7 +43,12 @@
     <Compile Include="Data\Collections\Extensions\DictionaryExtensions.cs" />
     <Compile Include="Data\Collections\Extensions\FloatArrayExtensions.cs" />
     <Compile Include="Data\Collections\Extensions\ListExtensions.cs" />
+    <Compile Include="Data\Files\FileObserver.cs" />
+    <Compile Include="Data\Hardware\HardwareMonitor.cs" />
     <Compile Include="Data\Numbers\RangedInt.cs" />
+    <Compile Include="Data\Numbers\RollingHistory.cs" />
+    <Compile Include="Data\Numbers\UintExtensions.cs" />
+    <Compile Include="Data\Numbers\UlongExtensions.cs" />
     <Compile Include="Reflection\ReflectionHelpers.cs" />
     <Compile Include="Data\Collections\Extensions\ArrayExtensions.cs" />
     <Compile Include="Data\Collections\Extensions\EnumExtensions.cs" />
@@ -56,7 +62,7 @@
     <Compile Include="Data\Strings\StringParsingExtensions.cs" />
     <Compile Include="Reflection\TypeExtensions.cs" />
     <Compile Include="Network\Http\HttpContentType.cs" />
-    <Compile Include="Network\Http\WebClient.cs" />
+    <Compile Include="Network\Http\HDWebClient.cs" />
     <Compile Include="Data\Numbers\Rng.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\Numbers\BoundedFloat.cs" />

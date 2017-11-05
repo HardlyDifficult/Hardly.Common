@@ -9,12 +9,12 @@ using System.Text;
 
 namespace HD
 {
-  public static class WebClient
+  public static class HDWebClient
   {
     const string and = "&";
     const int timeout = 7000;
 
-    static WebClient()
+    static HDWebClient()
     {
       ServicePointManager.ServerCertificateValidationCallback = YesAlwaysYes;
     }
