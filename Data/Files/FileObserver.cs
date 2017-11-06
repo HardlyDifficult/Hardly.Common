@@ -10,7 +10,7 @@ namespace HD
   {
     public event Action<string> observers;
     readonly string filename;
-    string lastLine = null;
+    //string lastLine = null;
     Thread thread;
     DateTime lastLog;
     long currentPosition;

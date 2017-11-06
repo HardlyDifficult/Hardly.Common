@@ -29,7 +29,7 @@ namespace HD
 
           return merged;
         }
-        catch (Exception e)
+        catch (Exception)
         {
           //Log.error("Array helper merge failed", e);
         }
@@ -66,7 +66,7 @@ namespace HD
 
           return merged;
         }
-        catch (Exception e)
+        catch (Exception)
         {
           //Log.error("Array helper merge failed", e);
         }
@@ -359,7 +359,7 @@ namespace HD
           Array.Copy(data, index, result, 0, length);
           return result;
         }
-        catch (Exception e)
+        catch (Exception)
         {
           //Log.error("Sub-array helper failed", e);
         }

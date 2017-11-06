@@ -44,7 +44,7 @@ namespace HD
             }
           }
         }
-        catch (Exception e)
+        catch (Exception)
         {
           //Log.info("Web client error", e);
         }
@@ -99,7 +99,7 @@ namespace HD
             }
           }
         }
-        catch (Exception e)
+        catch (Exception)
         {
           //Log.info("Web client error", e);
         }
@@ -121,7 +121,7 @@ namespace HD
           request.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
           return request.GetResponse();
         }
-        catch (Exception e)
+        catch (Exception)
         {
           //Log.info("Web client error", e);
         }
@@ -188,7 +188,7 @@ namespace HD
           }
         }
       }
-      catch (Exception e)
+      catch (Exception)
       {
         //Log.info(e.ToString());
         return null;
@@ -259,7 +259,7 @@ namespace HD
             }
           }
         }
-        catch (Exception e)
+        catch (Exception)
         {
           //Log.error("Stream helper failed", e);
         }
