@@ -59,7 +59,11 @@ namespace HD
       return Encoding.UTF8.GetBytes(data);
     }
 
-    public static string ToCsv(this object[] values, string insertBetweenEach, string insertBeforeEachValue, string insertAfterEachValue)
+    public static string ToCsv(
+      this object[] values, 
+      string insertBetweenEach = ",", 
+      string insertBeforeEachValue = null, 
+      string insertAfterEachValue = null)
     {
       var csv = "";
 
