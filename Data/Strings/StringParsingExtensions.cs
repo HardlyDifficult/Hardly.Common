@@ -7,8 +7,8 @@ namespace HD
   public static class StringParsing
   {
     public static string GetAfter(
-      this string source, 
-      string searchToken, 
+      this string source,
+      string searchToken,
       bool isFirstNotLastInstance = true)
     {
       if (source != null)
@@ -36,6 +36,10 @@ namespace HD
               return "";
             }
           }
+          else
+          {
+            return source;
+          }
 
           return null;
         }
@@ -45,7 +49,10 @@ namespace HD
       return null;
     }
 
-    public static string GetBefore(this string source, string searchToken, bool firstOrLastInstance = true)
+    public static string GetBefore(
+      this string source,
+      string searchToken,
+      bool firstOrLastInstance = true)
     {
       if (source != null)
       {
@@ -66,6 +73,10 @@ namespace HD
             {
               return source.Substring(0, i);
             }
+          }
+          else
+          {
+            return source;
           }
         }
         else
