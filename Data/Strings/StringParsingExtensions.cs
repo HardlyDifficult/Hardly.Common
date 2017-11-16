@@ -6,6 +6,19 @@ namespace HD
 {
   public static class StringParsing
   {
+    #region Constants
+    static readonly string[] dayOfWeek = new string[]
+    {
+      "sun",
+      "mon",
+      "tue",
+      "wed",
+      "thu",
+      "fri",
+      "sat",
+    };
+    #endregion
+
     public static string GetAfter(
       this string source,
       string searchToken,
@@ -180,6 +193,31 @@ namespace HD
       Debug.Fail("string tokenize");
 
       return null;
+    }
+
+    /// <summary>
+    /// day is today if this fails.
+    /// </summary>
+    public static bool TryGetDayOfWeek(
+     this string dayString,
+     out int day)
+    {
+      DateTime now = DateTime.Now;
+
+      day = now.Day;
+      if (string.IsNullOrWhiteSpace(dayString) == false)
+      {
+        for (int dayIndex = 0; dayIndex < dayOfWeek.Length; dayIndex++)
+        {
+          if (dayString.IndexOf(dayOfWeek[dayIndex], StringComparison.InvariantCultureIgnoreCase) >= 0)
+          {
+            day += dayIndex - (int)now.DayOfWeek;
+            return true;
+          }
+        }
+      }
+
+      return false;
     }
   }
 }
