@@ -36,10 +36,6 @@ namespace HD
               return "";
             }
           }
-          else
-          {
-            return source;
-          }
 
           return null;
         }
