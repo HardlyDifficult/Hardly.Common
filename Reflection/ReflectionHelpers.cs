@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
@@ -20,14 +21,14 @@ namespace HD
     public static T CreateTheFirst<T>()
     {
       Assembly[] assemblyList = AppDomain.CurrentDomain.GetAssemblies();
-      for(int iAssembly = 0; iAssembly < assemblyList.Length; iAssembly++)
+      for (int iAssembly = 0; iAssembly < assemblyList.Length; iAssembly++)
       {
         Assembly assembly = assemblyList[iAssembly];
         Type[] typeList = assembly.GetTypes();
-        for(int iType = 0; iType < typeList.Length; iType++)
+        for (int iType = 0; iType < typeList.Length; iType++)
         {
           Type type = typeList[iType];
-          if(typeof(T).IsAssignableFrom(type) && type.IsAbstract == false)
+          if (typeof(T).IsAssignableFrom(type) && type.IsAbstract == false)
           {
             ConstructorInfo constructor = type.GetConstructor(new Type[] { });
             return (T)constructor.Invoke(new object[] { });
@@ -51,7 +52,9 @@ namespace HD
           Type type = typeList[iType];
           if (typeof(T).IsAssignableFrom(type) && type.IsAbstract == false)
           {
-            ConstructorInfo constructor = type.GetConstructor(new Type[] { });
+            ConstructorInfo constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public, null, new Type[] { }, null);
+            Debug.Assert(constructor != null);
+
             resultList.Add((T)constructor.Invoke(new object[] { }));
           }
         }
