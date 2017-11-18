@@ -52,10 +52,20 @@ namespace HD
           Type type = typeList[iType];
           if (typeof(T).IsAssignableFrom(type) && type.IsAbstract == false)
           {
-            ConstructorInfo constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public, null, new Type[] { }, null);
-            Debug.Assert(constructor != null);
+            FieldInfo instanceField = type.GetField("instance", BindingFlags.Static | BindingFlags.Public);
+            if (instanceField != null && typeof(T).IsAssignableFrom(instanceField.FieldType))
+            {
+              object tObject = instanceField.GetValue(null);
+              Debug.Assert(tObject != null);
+              resultList.Add((T)tObject);
+            }
+            else
+            {
+              ConstructorInfo constructor = type.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public, null, new Type[] { }, null);
+              Debug.Assert(constructor != null);
 
-            resultList.Add((T)constructor.Invoke(new object[] { }));
+              resultList.Add((T)constructor.Invoke(new object[] { }));
+            }
           }
         }
       }
