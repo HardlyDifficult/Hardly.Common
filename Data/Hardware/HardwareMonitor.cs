@@ -8,9 +8,14 @@ namespace HD
     const int numberOfSamples = 20;
 
     readonly static RollingHistory totalCpuRollingHistory = new RollingHistory(numberOfSamples);
+
     readonly static RollingHistory miningCpuRollingHistory = new RollingHistory(numberOfSamples);
 
-    static readonly PerformanceCounter total_cpu = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+    /// <summary>
+    /// This appears to return results 10% different than the Windows Task Manager.... ?
+    /// </summary>
+    static readonly PerformanceCounter total_cpu 
+      = new PerformanceCounter("Processor", "% Processor Time", "_Total");
 
     public static PerformanceCounter minerProcessPerformanceCounter
     {
@@ -38,7 +43,8 @@ namespace HD
       totalCpuRollingHistory.Add(total_cpu.NextValue());
       if (minerProcessPerformanceCounter != null)
       {
-        miningCpuRollingHistory.Add(minerProcessPerformanceCounter.NextValue() / Environment.ProcessorCount);
+        // TODO why doesn't this work
+        //miningCpuRollingHistory.Add(minerProcessPerformanceCounter.NextValue() / Environment.ProcessorCount);
       }
       else
       {

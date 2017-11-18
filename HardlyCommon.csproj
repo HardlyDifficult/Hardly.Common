@@ -76,6 +76,7 @@
     <Compile Include="Reflection\TypeInstatiationExtensions.cs" />
     <Compile Include="Reflection\TypeReflectionExtensions.cs" />
     <Compile Include="Utils\CallStaticConstructorOnStartAttribute.cs" />
+    <Compile Include="Utils\ProcessExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Collections\Specialized\" />

@@ -1,12 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 
-namespace HD.Utils
+namespace HD
 {
-  class ProcessExtensions
+
+  public static class ProcessExtensions
   {
+    /// <remarks>https://stackoverflow.com/a/268394</remarks>
+    public static bool IsRunning(
+      this Process process)
+    {
+      Debug.Assert(process != null);
+
+      try
+      {
+        Process.GetProcessById(process.Id);
+      }
+      catch (ArgumentException)
+      {
+        return false;
+      }
+
+      return true;
+    }
   }
 }
