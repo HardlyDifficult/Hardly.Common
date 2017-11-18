@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
+using System.Linq;
 
 namespace HD
 {
@@ -16,12 +18,37 @@ namespace HD
       {
         Process.GetProcessById(process.Id);
       }
-      catch (ArgumentException)
+      catch 
       {
         return false;
       }
 
       return true;
+    }
+
+    public static string GetInstanceName(
+      this Process process)
+    {
+      string processName = Path.GetFileNameWithoutExtension(process.ProcessName);
+
+      PerformanceCounterCategory cat = new PerformanceCounterCategory("Process");
+      string[] instances = cat.GetInstanceNames()
+          .Where(inst => inst.StartsWith(processName))
+          .ToArray();
+
+      foreach (string instance in instances)
+      {
+        using (PerformanceCounter cnt = new PerformanceCounter("Process",
+            "ID Process", instance, true))
+        {
+          int val = (int)cnt.RawValue;
+          if (val == process.Id)
+          {
+            return instance;
+          }
+        }
+      }
+      return null;
     }
   }
 }

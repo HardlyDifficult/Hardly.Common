@@ -43,8 +43,8 @@ namespace HD
       totalCpuRollingHistory.Add(total_cpu.NextValue());
       if (minerProcessPerformanceCounter != null)
       {
-        // TODO why doesn't this work
-        //miningCpuRollingHistory.Add(minerProcessPerformanceCounter.NextValue() / Environment.ProcessorCount);
+        // TODO why doesn't this work in release mode only
+        miningCpuRollingHistory.Add(minerProcessPerformanceCounter.NextValue() / Environment.ProcessorCount);
       }
       else
       {
