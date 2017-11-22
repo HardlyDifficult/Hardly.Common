@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -26,6 +27,8 @@ namespace HD
     public static T PopFirst<T>(
       this List<T> list)
     {
+      Debug.Assert(list != null);
+
       if (list.Count == 0)
       {
         return default(T);

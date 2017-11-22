@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\TacticalArena\Assets\Scripts\Dependancies\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -87,4 +87,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /y "$(TargetDir)*" "$(SolutionDir)UnityTest\Assets\Scripts\Dependancies\"
+xcopy /y "$(TargetDir)*" "$(SolutionDir)TacticalArena\Assets\Scripts\Dependancies\"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
