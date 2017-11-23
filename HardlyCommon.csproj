@@ -88,7 +88,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /y "$(TargetDir)*" "$(SolutionDir)UnityTest\Assets\Scripts\Dependancies\"
-xcopy /y "$(TargetDir)*" "$(SolutionDir)TacticalArena\Assets\Scripts\Dependancies\"</PostBuildEvent>
+    <PostBuildEvent>xcopy /y "$(TargetDir)*" "$(SolutionDir)..\UnityTest\Assets\Scripts\Dependancies\"
+xcopy /y "$(TargetDir)*" "$(SolutionDir)..\TacticalArena\Assets\Scripts\Dependancies\"</PostBuildEvent>
   </PropertyGroup>
 </Project>
