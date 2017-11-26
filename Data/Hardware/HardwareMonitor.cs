@@ -3,6 +3,7 @@ using System.Diagnostics;
 
 namespace HD
 {
+  // TODO this is not ready to be in HardlyCommon..
   public static class HardwareMonitor
   {
     const int numberOfSamples = 20;
@@ -26,7 +27,7 @@ namespace HD
     {
       get
       {
-        return totalCpuRollingHistory.value;
+        return totalCpuRollingHistory.value / 100;
       }
     }
 
@@ -34,7 +35,7 @@ namespace HD
     {
       get
       {
-        return miningCpuRollingHistory.value;
+        return miningCpuRollingHistory.value / 100;
       }
     }
 

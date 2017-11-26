@@ -97,7 +97,13 @@ namespace HD
       return null;
     }
 
-    public static string GetBetween(this string source, string searchToken1, string searchToken2, bool firstOrLastInstance1 = true, bool firstOrLastInstance2 = true)
+    public static string GetBetween(
+      this string source, 
+      string searchToken1, 
+      string searchToken2, 
+      bool firstOrLastInstance1 = true, 
+      bool firstOrLastInstance2 = true,
+      bool requireEndToken = false)
     {
       if (source != null)
       {
@@ -124,6 +130,12 @@ namespace HD
             {
               iEnd = source.LastIndexOf(searchToken2, StringComparison.CurrentCulture);
             }
+
+            if(iEnd < 0 && requireEndToken == false)
+            {
+              iEnd = source.Length;
+            }
+
             if (iEnd > iStart)
             {
               return source.Substring(iStart, iEnd - iStart);

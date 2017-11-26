@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Cache;
+using System.Net.Http;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HD
 {
@@ -53,7 +56,10 @@ namespace HD
       return null;
     }
 
-    public static bool GetHTML(string url, out string results, Tuple<string, string>[] headers = null)
+    public static bool GetHTML(
+      string url,
+      out string results,
+      params (string key, string value)[] headers)
     {
       if (url != null)
       {
@@ -61,11 +67,12 @@ namespace HD
         {
           var request = (HttpWebRequest)WebRequest.Create(url);
           request.AllowAutoRedirect = false;
+          request.UserAgent = "Hardly a browser";
           if (headers != null)
           {
-            for (var i = 0; i < headers.Length; i++)
+            for (int i = 0; i < headers.Length; i++)
             {
-              request.Headers.Add(headers[i].Item1, headers[i].Item2);
+              request.Headers.Add(headers[i].key, headers[i].value);
             }
           }
           request.Timeout = timeout;
@@ -99,8 +106,9 @@ namespace HD
             }
           }
         }
-        catch (Exception)
+        catch (Exception e)
         {
+          Debug.Fail(e.ToString());
           //Log.info("Web client error", e);
         }
       }
@@ -130,9 +138,13 @@ namespace HD
       return null;
     }
 
-    public static string Post(string url, Dictionary<string, string> keyValuePairs,
-        string filename = null, byte[] fileBytes = null,
-        string fileParamName = null, string fileContentType = null)
+    public static string MultipartPost(
+      string url,
+      (string, string)[] keyValuePairs,
+      string filename = null,
+      byte[] fileBytes = null,
+      string fileParamName = null,
+      string fileContentType = null)
     {
       try
       {
@@ -157,7 +169,7 @@ namespace HD
             foreach (var item in keyValuePairs)
             {
               rs.Write(boundarybytes, 0, boundarybytes.Length);
-              var formitem = $"Content-Disposition: form-data; name=\"{item.Key}\"\r\n\r\n{item.Value}";
+              var formitem = $"Content-Disposition: form-data; name=\"{item.Item1}\"\r\n\r\n{item.Item2}";
               var formitembytes = Encoding.UTF8.GetBytes(formitem);
               rs.Write(formitembytes, 0, formitembytes.Length);
               rs.Write(newLine, 0, newLine.Length);
@@ -195,40 +207,75 @@ namespace HD
       }
     }
 
-    // does not appear to be a valid post
-    //public static string Post(string url, Dictionary<string, string> keyValuePairs) {
-    //    try {
-    //        Log.info($"Requesting url: {url}");
-    //        var wr = (HttpWebRequest)WebRequest.Create(url);
-    //        wr.Method = "POST";
-    //        wr.KeepAlive = false;
-    //        wr.Credentials = CredentialCache.DefaultCredentials;
-    //        wr.ReadWriteTimeout = timeout;
-    //        wr.Timeout = timeout;
-    //        using(var rs = wr.GetRequestStream()) {
-    //            rs.ReadTimeout = timeout;
-    //            rs.WriteTimeout = timeout;
-    //            var first = true;
-    //            foreach(var item in keyValuePairs) {
-    //                var prefix = first ? string.Empty : and;
-    //                var formitem = $"{prefix}{item.Key}={item.Value}";
-    //                var formitembytes = Encoding.UTF8.GetBytes(formitem);
-    //                rs.Write(formitembytes, 0, formitembytes.Length);
-    //                first = false;
-    //            }
-    //            rs.Flush();
-    //        }
-    //        using(var response = wr.GetResponse()) {
-    //            using(var stream = response.GetResponseStream()) {
-    //                var data = stream.Read();
-    //                return data.ToStringDecode();
-    //            }
-    //        }
-    //    } catch(Exception e) {
-    //        Log.error("WebClient POST", e);
-    //        return null;
-    //    }
-    //}
+    // TODO does this work?
+    public static string Post(
+      string url,
+      string body,
+      (string key, string value)[] requestHeaderList,
+      (string key, string value)[] contentHeaderList) // TODO remove?
+    {
+      HttpClient client = new HttpClient();
+      //var content = new FormUrlEncodedContent(parameters);
+      HttpRequestMessage requestMessage = new HttpRequestMessage(HttpMethod.Post, url);
+      var content = new StringContent(body);
+      content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+      //content.Headers.Allow.Add("application/json");
+      //for (int i = 0; i < contentHeaderList.Length; i++)
+      //{
+      //  var param = contentHeaderList[i];
+      //  content.Headers.Add(param.key, param.value);
+      //}
+      requestMessage.Content = content;
+      for (int i = 0; i < requestHeaderList.Length; i++)
+      {
+        var param = requestHeaderList[i];
+        requestMessage.Headers.Add(param.key, param.value);
+      }
+
+      var response = client.SendAsync(requestMessage).Result;
+
+      return response.Content.ReadAsStringAsync().Result;
+
+
+
+
+      //try
+      //{
+      //  var wr = (HttpWebRequest)WebRequest.Create(url);
+      //  wr.Method = "POST";
+      //  wr.KeepAlive = false;
+      //  //wr.Credentials = CredentialCache.DefaultCredentials;
+      //  wr.ReadWriteTimeout = timeout;
+      //  wr.Timeout = timeout;
+      //  using (Stream rs = wr.GetRequestStream())
+      //  {
+      //    rs.ReadTimeout = timeout;
+      //    rs.WriteTimeout = timeout;
+      //    bool first = true;
+      //    foreach (var item in parameters)
+      //    {
+      //      string prefix = first ? string.Empty : and;
+      //      string formitem = $"{prefix}{item.key}={item.value}";
+      //      byte[] formitembytes = Encoding.UTF8.GetBytes(formitem);
+      //      rs.Write(formitembytes, 0, formitembytes.Length);
+      //      first = false;
+      //    }
+      //    rs.Flush();
+      //  }
+      //  using (var response = wr.GetResponse())
+      //  {
+      //    using (var stream = response.GetResponseStream())
+      //    {
+      //      var data = stream.Read();
+      //      return data.ToStringDecode();
+      //    }
+      //  }
+      //}
+      //catch (Exception e)
+      //{
+      //  return null;
+      //}
+    }
 
     static bool YesAlwaysYes(object sender, X509Certificate certificate,
         X509Chain chain, SslPolicyErrors sslPolicyErrors)
