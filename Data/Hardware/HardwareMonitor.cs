@@ -15,7 +15,7 @@ namespace HD
     /// <summary>
     /// This appears to return results 10% different than the Windows Task Manager.... ?
     /// </summary>
-    static readonly PerformanceCounter total_cpu 
+    static readonly PerformanceCounter total_cpu
       = new PerformanceCounter("Processor", "% Processor Time", "_Total");
 
     public static PerformanceCounter minerProcessPerformanceCounter
@@ -39,18 +39,32 @@ namespace HD
       }
     }
 
-    public static void RefreshValues()
+    /// <summary>
+    /// Returns false if the process crashed.
+    /// </summary>
+    public static bool RefreshValues()
     {
       totalCpuRollingHistory.Add(total_cpu.NextValue());
       if (minerProcessPerformanceCounter != null)
       {
-        // TODO why doesn't this work in release mode only
-        miningCpuRollingHistory.Add(minerProcessPerformanceCounter.NextValue() / Environment.ProcessorCount);
+        try
+        {
+          miningCpuRollingHistory.Add(minerProcessPerformanceCounter.NextValue() / Environment.ProcessorCount);
+        }
+        catch
+        {
+          // The middleware app has crashed
+          minerProcessPerformanceCounter = null;
+          miningCpuRollingHistory.Clear(); 
+          return false;
+        }
       }
       else
       {
         miningCpuRollingHistory.Clear();
       }
+
+      return true;
     }
   }
 }

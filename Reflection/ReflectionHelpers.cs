@@ -8,13 +8,22 @@ namespace HD
 {
   public static class ReflectionHelpers
   {
-
+    /// <summary>
+    /// Loads all .dll files in the current process's directory
+    /// 
+    /// TODO can we store a bit or something so this only happens once?
+    /// </summary>
     public static void LoadAllAssemblies()
     {
-      var files = Directory.GetFiles(Environment.CurrentDirectory, "*.dll", SearchOption.TopDirectoryOnly);
+      var files = Directory.GetFiles(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+        "*.dll", SearchOption.TopDirectoryOnly);
       for (var i = 0; i < files.Length; i++)
       {
-        Assembly.LoadFile(files[i]);
+        try
+        {
+          Assembly.LoadFile(files[i]);
+        }
+        catch { } // C++ will throw exceptions..
       }
     }
 

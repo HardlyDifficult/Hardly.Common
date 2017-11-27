@@ -93,6 +93,7 @@
     <Compile Include="Reflection\TypeReflectionExtensions.cs" />
     <Compile Include="Utils\CallStaticConstructorOnStartAttribute.cs" />
     <Compile Include="Utils\ProcessExtensions.cs" />
+    <Compile Include="Utils\Throttle.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Collections\Specialized\" />
