@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace HD
 {
@@ -26,13 +27,47 @@ namespace HD
 
     public event Action<Exception> onDisconnect;
 
-    TcpClient client;
-
-    StreamReader reader;
+    TcpClient _client;
 
     StreamWriter writer;
 
     readonly AutoResetEvent pingEvent = new AutoResetEvent(false);
+
+    object myLock = new object();
+
+    Thread thread;
+    #endregion
+
+    #region Properties
+    TcpClient client
+    {
+      get
+      {
+        return _client;
+      }
+      set
+      {
+        lock (myLock)
+        {
+
+          if (value == null)
+          {
+            try
+            {
+              thread?.Abort();
+            }
+            catch { }
+
+            try
+            {
+              client.Close();
+            }
+            catch { }
+          }
+          _client = value;
+        }
+      }
+    }
     #endregion
 
     #region Events
@@ -46,16 +81,59 @@ namespace HD
       Stream stream = client.GetStream();
       Debug.Assert(stream != null);
 
-      reader = new StreamReader(stream);
       writer = new StreamWriter(stream);
 
-      ReadLoopAsync();
-
       onConnection?.Invoke();
+
+      try
+      {
+        thread?.Abort();
+      }
+      catch { }
+      thread = new Thread(Run);
+      thread.Start();
     }
     #endregion
 
     #region Write
+    protected virtual void Run()
+    {
+      try
+      {
+        StreamReader reader = new StreamReader(client.GetStream());
+        while (true)
+        {
+          string message = reader.ReadLine();
+          if (message == null)
+          { // Disconnected
+            break;
+          }
+
+          if (message == ping)
+          {
+            Send(pong);
+            continue;
+          }
+          else if (message == pong)
+          {
+            pingEvent.Set();
+            continue;
+          }
+
+          onMessage(message);
+        }
+      }
+      catch (Exception e)
+      {
+        client = null;
+        onDisconnect?.Invoke(e);
+        return;
+      }
+
+      client = null;
+      onDisconnect?.Invoke(null);
+    }
+
     public bool Ping()
     {
       Send(ping);
@@ -70,6 +148,11 @@ namespace HD
     public void Send(
       string message)
     {
+      if (client == null)
+      {
+        return;
+      }
+
       try
       {
         writer.WriteLine(message);
@@ -77,60 +160,9 @@ namespace HD
       }
       catch (Exception e)
       {
-        try
-        {
-          client.Close();
-        }
-        catch { }
+        client = null;
         onDisconnect?.Invoke(e);
       }
-    }
-    #endregion
-
-    #region Private
-    async void ReadLoopAsync()
-    {
-      try
-      {
-        while (true)
-        {
-          string message = await reader.ReadLineAsync();
-          if (message == null)
-          { // Disconnected
-            break;
-          }
-
-          if (message == ping)
-          {
-            Send(pong);
-            return;
-          }
-          else if (message == pong)
-          {
-            pingEvent.Set();
-            return;
-          }
-
-          onMessage(message);
-        }
-      }
-      catch (Exception e)
-      {
-        try
-        {
-          client.Close();
-        }
-        catch { }
-
-        onDisconnect?.Invoke(e);
-      }
-
-      try
-      {
-        client.Close();
-      }
-      catch { }
-      onDisconnect?.Invoke(null);
     }
     #endregion
   }
