@@ -33,7 +33,15 @@ namespace HD
       for (int iAssembly = 0; iAssembly < assemblyList.Length; iAssembly++)
       {
         Assembly assembly = assemblyList[iAssembly];
-        Type[] typeList = assembly.GetTypes();
+        Type[] typeList;
+        try
+        {
+          typeList = assembly.GetTypes();
+        }
+        catch
+        {
+          continue;
+        }
         for (int iType = 0; iType < typeList.Length; iType++)
         {
           Type type = typeList[iType];
