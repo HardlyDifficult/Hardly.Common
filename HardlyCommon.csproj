@@ -65,7 +65,6 @@
     <Compile Include="Data\Collections\Extensions\FloatArrayExtensions.cs" />
     <Compile Include="Data\Collections\Extensions\ListExtensions.cs" />
     <Compile Include="Data\Files\FileObserver.cs" />
-    <Compile Include="Data\Hardware\HardwareMonitor.cs" />
     <Compile Include="Data\Numbers\RangedInt.cs" />
     <Compile Include="Data\Numbers\RollingHistory.cs" />
     <Compile Include="Data\Numbers\UintExtensions.cs" />
@@ -100,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\Collections\Specialized\" />
+    <Folder Include="Data\Hardware\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -6,7 +6,11 @@ namespace HD
   {
     double[] historyList;
     int index;
-    bool hasFilledOnce;
+
+    public bool hasFilledOnce
+    {
+      get; private set;
+    }
 
     public double value
     {
