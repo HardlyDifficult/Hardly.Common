@@ -6,6 +6,7 @@ namespace HD
 {
   public static class AppDomainExtensions
   {
+
     // This did not work :(
     //public static void AddAttributeToAllClasses<AttributeType>(this AppDomain domain)
     //  where AttributeType : Attribute, new()
