@@ -67,7 +67,19 @@ namespace HD
         {
           var request = (HttpWebRequest)WebRequest.Create(url);
           request.AllowAutoRedirect = false;
-          request.UserAgent = "Hardly a browser";
+          request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36";
+          request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8";
+//          GET / auctions ? type = sale & status = open & limit = 10 & sorting = cheap & orderBy = current_price & orderDirection = asc HTTP / 1.1
+//Host: api.cryptokitties.co
+//Connection: keep - alive
+//Cache - Control: max - age = 0
+//User - Agent: Mozilla / 5.0(Windows NT 10.0; Win64; x64) AppleWebKit / 537.36(KHTML, like Gecko) Chrome / 62.0.3202.94 Safari / 537.36
+//Upgrade - Insecure - Requests: 1
+//Accept: text / html,application / xhtml + xml,application / xml; q = 0.9,image / webp,image / apng,*/*;q=0.8
+//Accept-Encoding: gzip, deflate, br
+//Accept-Language: en-US,en;q=0.9
+//Cookie: _ga=GA1.2.276550903.1512537969; _gid=GA1.2.586418661.1512537969
+//If-None-Match: W/"201b-vTvUfviND+csJkMp8AvGfve+ODg"
           if (headers != null)
           {
             for (int i = 0; i < headers.Length; i++)
