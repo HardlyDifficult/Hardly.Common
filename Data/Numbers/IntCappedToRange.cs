@@ -8,7 +8,7 @@ namespace HD
   /// When outside of this range, it loops around.  
   /// e.g. max = 3 then value 5 == 2.
   /// </summary>
-  public struct RangedInt
+  public struct IntCappedToRange
   {
     #region Data
     /// <summary>
@@ -32,7 +32,7 @@ namespace HD
     #endregion
 
     #region Init
-    public RangedInt(
+    public IntCappedToRange(
       int maxExclusive,
       int current = minValue)
     {
@@ -45,22 +45,22 @@ namespace HD
     #endregion
 
     #region Operators
-    public static RangedInt operator ++(
-      RangedInt rangedInt)
+    public static IntCappedToRange operator ++(
+      IntCappedToRange rangedInt)
     {
       rangedInt += 1;
       return rangedInt;
     }
 
-    public static RangedInt operator --(
-      RangedInt rangedInt)
+    public static IntCappedToRange operator --(
+      IntCappedToRange rangedInt)
     {
       rangedInt -= 1;
       return rangedInt;
     }
 
-    public static RangedInt operator +(
-      RangedInt rangedInt,
+    public static IntCappedToRange operator +(
+      IntCappedToRange rangedInt,
       int delta)
     {
       int newValue = rangedInt.current + delta;
@@ -72,24 +72,24 @@ namespace HD
       {
         newValue += rangedInt.supportedValueRange;
       }
-      return new RangedInt(rangedInt.maxExclusive, newValue);
+      return new IntCappedToRange(rangedInt.maxExclusive, newValue);
     }
 
-    public static RangedInt operator -(
-      RangedInt rangedInt,
+    public static IntCappedToRange operator -(
+      IntCappedToRange rangedInt,
       int delta)
     {
       return rangedInt + (-delta);
     }
 
     public static explicit operator int(
-      RangedInt myValue)
+      IntCappedToRange myValue)
     {
       return myValue.current;
     }
 
     public static explicit operator uint(
-      RangedInt myValue)
+      IntCappedToRange myValue)
     {
       return (uint)myValue.current;
     }

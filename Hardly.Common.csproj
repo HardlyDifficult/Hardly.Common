@@ -58,7 +58,7 @@
     <Compile Include="Data\Collections\Extensions\FloatArrayExtensions.cs" />
     <Compile Include="Data\Collections\Extensions\ListExtensions.cs" />
     <Compile Include="Data\Files\FileObserver.cs" />
-    <Compile Include="Data\Numbers\RangedInt.cs" />
+    <Compile Include="Data\Numbers\IntCappedToRange.cs" />
     <Compile Include="Data\Numbers\RollingHistory.cs" />
     <Compile Include="Data\Numbers\UintExtensions.cs" />
     <Compile Include="Data\Numbers\UlongExtensions.cs" />
