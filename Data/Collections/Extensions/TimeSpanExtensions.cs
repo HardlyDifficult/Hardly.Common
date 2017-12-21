@@ -53,7 +53,7 @@ namespace HD
     {
       if (timeSpan.TotalMinutes <= 1)
       {
-        int seconds = (int)Math.Round(timeSpan.TotalSeconds);
+        int seconds = HDMath.Round(timeSpan.TotalSeconds);
         return string.Format("{0} sec{1}", seconds, seconds > 1 ? "s" : "");
       }
       else if (timeSpan.TotalHours <= 1)
