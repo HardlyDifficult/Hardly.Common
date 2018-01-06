@@ -306,6 +306,23 @@ namespace HD
       return d;
     }
 
+    public static float Min(float a, float b, float c)
+    {
+      if (a < b)
+      {
+        if (a < c)
+        {
+            return a;
+        }
+          return c;
+      }
+      if (b < c)
+      {
+          return b;
+      }
+        return c;
+    }
+
     public static float Min(float a, float b)
     {
       if (a < b)
@@ -387,6 +404,12 @@ namespace HD
     //    return Math.Pow(a, exp);
     //}
     public static int Round(float a)
+    {
+      return (int)System.Math.Round(a);
+    }
+
+    public static int Round(
+      double a)
     {
       return (int)System.Math.Round(a);
     }

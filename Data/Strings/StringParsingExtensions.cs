@@ -217,7 +217,7 @@ namespace HD
       DateTime now = DateTime.Now;
 
       day = now.Day;
-      if (string.IsNullOrWhiteSpace(dayString) == false)
+      if (string.IsNullOrEmpty(dayString) == false)
       {
         for (int dayIndex = 0; dayIndex < dayOfWeek.Length; dayIndex++)
         {
