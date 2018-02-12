@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace HD
 {
@@ -24,6 +25,16 @@ namespace HD
       if (timeToSleep.Ticks > 0)
       {
         Thread.Sleep(timeToSleep);
+      }
+      SetLastUpdateTime();
+    }
+
+    public async Task WaitTillReady()
+    {
+      TimeSpan timeToSleep = minTimeBetweenRuns - (DateTime.Now - lastRun);
+      if (timeToSleep.Ticks > 0)
+      {
+        await Task.Delay(timeToSleep);
       }
       SetLastUpdateTime();
     }
