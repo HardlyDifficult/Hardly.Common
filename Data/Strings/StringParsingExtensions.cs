@@ -162,7 +162,7 @@ namespace HD
 
     public static bool IsLowercase(this string value)
     {
-      return value.Trim().Equals(value);
+      return value.ToLower().Equals(value);
     }
 
     public static bool IsTrimmed(this string value)
