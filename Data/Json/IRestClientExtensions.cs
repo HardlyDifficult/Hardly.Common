@@ -8,15 +8,16 @@ namespace HD
 {
   public static class IRestClientExtensions
   {
-    public static async Task<T> GetAsync<T>(
+    public static async Task<T> AsyncDownload<T>(
       this IRestClient restClient,
       string url,
+      Method method = Method.GET,
       (string key, string value)[] headers = null)
       where T : new()
     {
       Debug.Assert(url.StartsWith("/") == false);
 
-      return await restClient.HttpRequestAsync<T>($"/{url}", null, Method.GET, headers);
+      return await restClient.HttpRequestAsync<T>($"/{url}", null, method, headers);
     }
 
     static async Task<T> HttpRequestAsync<T>(
@@ -57,15 +58,16 @@ namespace HD
       return JsonConvert.DeserializeObject<T>(response.Content);
     }
 
-    public static T Get<T>(
+    public static T Download<T>(
       this IRestClient restClient,
       string url,
+      Method method = Method.GET,
       (string key, string value)[] headers = null)
       where T : new()
     {
       Debug.Assert(url.StartsWith("/") == false);
 
-      return restClient.HttpRequest<T>($"/{url}", null, Method.GET, headers);
+      return restClient.HttpRequest<T>($"/{url}", null, method, headers);
     }
 
     static T HttpRequest<T>(
