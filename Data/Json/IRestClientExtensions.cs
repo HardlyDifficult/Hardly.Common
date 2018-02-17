@@ -57,12 +57,23 @@ namespace HD
       this IRestClient restClient,
       string url,
       Method method = Method.GET,
-      (string key, string value)[] headers = null)
+      (string key, string value)[] headers = null,
+      object jsonObject = null)
       where T : new()
     {
       Debug.Assert(url.StartsWith("/") == false);
 
-      return await restClient.HttpRequestAsync<T>($"/{url}", null, method, headers);
+      string json;
+      if (jsonObject != null)
+      {
+        json = JsonConvert.SerializeObject(jsonObject);
+      }
+      else
+      {
+        json = null;
+      }
+
+      return await restClient.HttpRequestAsync<T>($"/{url}", json, method, headers);
     }
 
     static async Task<T> HttpRequestAsync<T>(
