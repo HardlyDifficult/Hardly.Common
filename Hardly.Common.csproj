@@ -35,6 +35,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Common.Logging, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.3.4.1\lib\net40\Common.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Common.Logging.Core, Version=3.4.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Common.Logging.Core.3.4.1\lib\net40\Common.Logging.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -83,6 +90,7 @@
     <Compile Include="Data\Collections\Extensions\TimeSpanExtensions.cs" />
     <Compile Include="Reflection\TypeInstatiationExtensions.cs" />
     <Compile Include="Reflection\TypeReflectionExtensions.cs" />
+    <Compile Include="Utils\AutoUpdateWithThrottle.cs" />
     <Compile Include="Utils\CallStaticConstructorOnStartAttribute.cs" />
     <Compile Include="Utils\ProcessExtensions.cs" />
     <Compile Include="Utils\Throttle.cs" />
