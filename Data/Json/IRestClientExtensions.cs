@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace HD
@@ -61,7 +62,8 @@ namespace HD
       string url,
       Method method = Method.GET,
       (string key, string value)[] headers = null,
-      object jsonObject = null)
+      object jsonObject = null,
+      CancellationToken cancellationToken = default(CancellationToken))
       where T : new()
     {
       Debug.Assert(url.StartsWith("/") == false);
@@ -76,7 +78,7 @@ namespace HD
         json = null;
       }
 
-      return await restClient.HttpRequestAsync<T>($"/{url}", json, method, headers);
+      return await restClient.HttpRequestAsync<T>($"/{url}", json, method, headers, cancellationToken);
     }
 
     static async Task<T> HttpRequestAsync<T>(
@@ -84,7 +86,8 @@ namespace HD
       string url,
       string requestJson,
       Method method,
-      (string key, string value)[] headers)
+      (string key, string value)[] headers,
+      CancellationToken cancellationToken)
       where T : new()
     {
       log.Trace(url);
@@ -112,7 +115,7 @@ namespace HD
         request.AddParameter("application/json", requestJson, ParameterType.RequestBody);
       }
 
-      IRestResponse<T> response = await restClient.ExecuteTaskAsync<T>(request);
+      IRestResponse<T> response = await restClient.ExecuteTaskAsync<T>(request, cancellationToken);
 
       try
       {
