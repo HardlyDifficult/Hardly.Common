@@ -40,6 +40,12 @@ namespace HD
         AutoReset = false,
       };
       timerRefreshData.Elapsed += Timer_Elapsed;
+      cancellationToken.Register(StopTimer);
+    }
+
+    void StopTimer()
+    {
+      timerRefreshData.Stop();
     }
 
     /// <summary>
@@ -73,7 +79,7 @@ namespace HD
     async Task Refresh()
     {
       await throttle.WaitTillReady();
-      await onRefresh?.Invoke();
+      await onRefresh();
       throttle.SetLastUpdateTime();
 
       if (cancellationToken.IsCancellationRequested == false)

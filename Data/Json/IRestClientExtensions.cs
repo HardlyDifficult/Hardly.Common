@@ -115,17 +115,21 @@ namespace HD
         request.AddParameter("application/json", requestJson, ParameterType.RequestBody);
       }
 
-      IRestResponse<T> response = await restClient.ExecuteTaskAsync<T>(request, cancellationToken);
-
       try
       {
+        IRestResponse<T> response = await restClient.ExecuteTaskAsync<T>(request, cancellationToken);
         return JsonConvert.DeserializeObject<T>(response.Content);
+      }
+      catch (TaskCanceledException e)
+      {
+        log.Error("Task canceled", e);
       }
       catch (Exception e)
       { // Parsing error
         log.Error("Json parsing error", e);
-        return default(T);
       }
+
+      return default(T);
     }
 
     public static T Download<T>(
