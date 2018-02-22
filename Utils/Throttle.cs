@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Logging;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -6,14 +7,21 @@ namespace HD
 {
   public class Throttle
   {
-    DateTime lastRun;
+    static readonly ILog log = LogManager.GetLogger<Throttle>();
+
+    readonly TimeSpan maxSlippage;
+
+    DateTime nextRun;
+
     readonly TimeSpan minTimeBetweenRuns;
 
     public Throttle(
-      TimeSpan minTimeBetweenRuns)
+      TimeSpan minTimeBetweenRuns,
+      TimeSpan maxSlippage)
     {
-      lastRun = DateTime.MinValue;
+      nextRun = DateTime.MinValue;
       this.minTimeBetweenRuns = minTimeBetweenRuns;
+      this.maxSlippage = maxSlippage;
     }
 
     /// <summary>
@@ -21,27 +29,53 @@ namespace HD
     /// </summary>
     public void SleepIfNeeded()
     {
-      TimeSpan timeToSleep = minTimeBetweenRuns - (DateTime.Now - lastRun);
-      if (timeToSleep.Ticks > 0)
+      TimeSpan? timeToSleep = GetTimeToSleep();
+      if (timeToSleep != null)
       {
-        Thread.Sleep(timeToSleep);
+        log.Info(timeToSleep.Value); // TODO trace;
+        Thread.Sleep(timeToSleep.Value);
       }
+
       SetLastUpdateTime();
     }
 
     public async Task WaitTillReady()
     {
-      TimeSpan timeToSleep = minTimeBetweenRuns - (DateTime.Now - lastRun);
-      if (timeToSleep.Ticks > 0)
+      TimeSpan? timeToSleep = GetTimeToSleep();
+      if (timeToSleep != null)
       {
-        await Task.Delay(timeToSleep);
+        log.Info(timeToSleep.Value); // TODO trace;
+        await Task.Delay(timeToSleep.Value);
       }
+
       SetLastUpdateTime();
     }
 
     public void SetLastUpdateTime()
     {
-      lastRun = DateTime.Now;
+      nextRun += minTimeBetweenRuns;
+
+      DateTime now = DateTime.Now;
+      if(now - nextRun > maxSlippage)
+      {
+        nextRun = now + minTimeBetweenRuns;
+      }
+    }
+
+    TimeSpan? GetTimeToSleep()
+    {
+      DateTime now = DateTime.Now;
+      if (nextRun > now)
+      {
+        return nextRun - now;
+      }
+
+      return null;
+    }
+
+    public void BackOff()
+    {
+      nextRun = DateTime.Now + TimeSpan.FromSeconds(10) + minTimeBetweenRuns;
     }
   }
 }
