@@ -47,7 +47,15 @@ namespace HD
 
       (HttpStatusCode status, string content)
         = await restClient.HttpRequestAsync($"/{url}", json, method, headers, cancellationToken);
-      return (status, content != null ? JsonConvert.DeserializeObject<TJson>(content) : null);
+      try
+      {
+        return (status, content != null ? JsonConvert.DeserializeObject<TJson>(content) : null);
+      }
+      catch (Exception e)
+      {
+        log.Error("Json conversion", e);
+        return (status, null);
+      }
     }
 
     static async Task<(HttpStatusCode status, string content)> HttpRequestAsync(
